@@ -31,6 +31,7 @@ public class TrackController {
                                  @RequestParam("spotify_uri") String spotifyUri) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String userName = authentication.getName();
+
     QueueDb queue = queueRepository.findByName(queueName)
         .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "No queue found for name: " + queueName));
     return trackRepository.save(new TrackDb(trackName, subtitle, imageUrl, spotifyUri, userName, queue));
