@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.happyhouse.HappyQueue.util.HappyHouseStyle;
 import org.immutables.value.Value.Immutable;
+import org.immutables.value.Value.Parameter;
 
-@Immutable
+import java.util.List;
+
 @HappyHouseStyle
+@Immutable
 @JsonNaming(SnakeCaseStrategy.class)
-public interface TrackIF {
-  String getTitle();
-  String getSubtitle();
-  String getImageUrl();
-  String getSpotifyUri();
+public interface SearchResponseIF {
+  @Parameter
+  List<Track> getTracks();
 }

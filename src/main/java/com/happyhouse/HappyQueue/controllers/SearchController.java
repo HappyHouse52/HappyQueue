@@ -1,5 +1,6 @@
 package com.happyhouse.HappyQueue.controllers;
 
+import com.happyhouse.HappyQueue.model.SearchResponse;
 import com.happyhouse.HappyQueue.model.Track;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
@@ -23,7 +24,7 @@ public class SearchController {
   }
 
   @GetMapping(path = "/v1/search")
-  public List<Track> search(@RequestParam(name = "q") String query) {
+  public SearchResponse search(@RequestParam(name = "q") String query) {
     final SearchTracksRequest searchRequest = spotifyApi.searchTracks(query).build();
     final List<com.wrapper.spotify.model_objects.specification.Track> results;
     try {
@@ -31,7 +32,7 @@ public class SearchController {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    return results.stream().map(this::fromSpotifyModel).collect(Collectors.toList());
+    return SearchResponse.of(results.stream().map(this::fromSpotifyModel).collect(Collectors.toList()));
   }
 
   private Track fromSpotifyModel(com.wrapper.spotify.model_objects.specification.Track track) {

@@ -9,5 +9,4 @@ class HappyQueueApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
