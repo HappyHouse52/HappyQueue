@@ -1,45 +1,32 @@
 package com.happyhouse.HappyQueue.controllers;
 
-import com.happyhouse.HappyQueue.model.SpotifyQueue;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
-import com.wrapper.spotify.model_objects.specification.Image;
-import com.wrapper.spotify.model_objects.specification.Track;
-import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import com.happyhouse.HappyQueue.model.QueueDb;
+import com.happyhouse.HappyQueue.model.TrackDb;
+import com.happyhouse.HappyQueue.repositories.QueueRepository;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 @RestController
 public class QueueController {
-  private final SpotifyApi spotifyApi;
+  private final QueueRepository queueRepository;
 
-  public QueueController(final SpotifyApi spotifyApi) {this.spotifyApi = spotifyApi;}
-
-  @GetMapping("/v1/queues")
-  public SpotifyQueue getQueue(@RequestParam(name = "id", defaultValue = "test") String queueId) {
-    final SearchTracksRequest searchRequest = spotifyApi.searchTracks(queueId).build();
-    final List<Track> results;
-    try {
-      results = Arrays.asList(searchRequest.execute().getItems());
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-    return SpotifyQueue.builder()
-        .setId(queueId)
-        .setTracks(results.stream().map(this::fromSpotifyModel).collect(Collectors.toList()))
-        .build();
+  public QueueController(QueueRepository queueRepository) {
+    this.queueRepository = queueRepository;
   }
 
-  private com.happyhouse.HappyQueue.model.Track fromSpotifyModel(Track track) {
-    return com.happyhouse.HappyQueue.model.Track.builder()
-        .setName(track.getName())
-        .setImageUrl(Stream.of(track.getAlbum().getImages()).map(Image::getUrl).findFirst().orElseThrow())
-        .setSubtitle(Stream.of(track.getArtists()).map(ArtistSimplified::getName).collect(Collectors.joining(", ")))
-        .build();
+  @GetMapping("/v1/queue/{queueName}")
+  public QueueDb getQueue(@PathVariable String queueName) {
+    QueueDb queue = queueRepository.findByName(queueName)
+        .orElseGet(() -> queueRepository.save(new QueueDb(queueName)));
+
+    queue.setTracks(queue.getTracks()
+        .stream()
+        .sorted(Comparator.comparing(TrackDb::getQueueTime))
+        .collect(Collectors.toList()));
+    return queue;
   }
 }

@@ -26,8 +26,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     http.httpBasic()
         .and()
         .authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/v1/queues/**").hasRole("USER")
-        .antMatchers(HttpMethod.GET, "/v1/queues").hasRole("USER")
+        .antMatchers(HttpMethod.GET, "/v1/queue/**").hasRole("USER")
+        .antMatchers(HttpMethod.GET, "/v1/queue").hasRole("USER")
+        .antMatchers(HttpMethod.GET, "/v1/search/**").hasRole("USER")
+        .antMatchers(HttpMethod.GET, "/v1/search").hasRole("USER")
         .and()
         .csrf().disable()
         .formLogin().disable();
