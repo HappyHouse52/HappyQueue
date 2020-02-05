@@ -21,9 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class HappyQueueApplication implements CommandLineRunner {
-	@Value("${SPOTIFY_CLIENT_ID}")
+	@Value("${spotify.client.id}")
 	private String clientId;
-	@Value("${SPOTIFY_CLIENT_SECRET}")
+	@Value("${spotify.client.secret}")
 	private String clientSecret;
 
 	private final QueueRepository queueRepository;
