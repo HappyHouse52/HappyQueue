@@ -3,6 +3,7 @@ package com.happyhouse.HappyQueue.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.happyhouse.HappyQueue.model.QueueDb;
 import java.sql.Timestamp;
 import java.time.Instant;
 import javax.persistence.Entity;
