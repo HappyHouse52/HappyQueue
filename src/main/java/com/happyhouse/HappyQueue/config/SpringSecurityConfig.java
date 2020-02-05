@@ -2,6 +2,7 @@ package com.happyhouse.HappyQueue.config;
 
 import com.happyhouse.HappyQueue.services.HappyQueueUserDetailsService;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,6 +29,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         .httpBasic()
         .and()
         .authorizeRequests()
+        .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
         .anyRequest().authenticated()
         .and()
         .sessionManagement()
