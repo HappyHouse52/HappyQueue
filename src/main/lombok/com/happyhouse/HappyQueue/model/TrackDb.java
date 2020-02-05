@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -27,6 +28,7 @@ public class TrackDb {
   @ManyToOne
   @JoinColumn
   @JsonIgnore
+  @ToString.Exclude
   private QueueDb queue;
 
   public TrackDb(String title, String subtitle, String imageUri, String spotifyUri, String queuer, QueueDb queue) {
