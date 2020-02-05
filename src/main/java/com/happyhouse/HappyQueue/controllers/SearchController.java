@@ -41,7 +41,7 @@ public class SearchController {
         .setImageUrl(Stream.of(track.getAlbum().getImages())
             .map(Image::getUrl)
             .findFirst().orElseThrow())
-        .setSubtitle(Stream.of(track.getArtists())
+        .setSubtitle("By " + Stream.of(track.getArtists())
             .map(ArtistSimplified::getName)
             .collect(Collectors.joining(", ")))
         .setSpotifyUri(track.getUri())

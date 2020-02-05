@@ -1,47 +1,36 @@
 package com.happyhouse.HappyQueue.config;
 
-import org.springframework.context.annotation.Bean;
+import com.happyhouse.HappyQueue.services.HappyQueueUserDetailsService;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+  private HappyQueueUserDetailsService happyQueueUserDetailsService;
+
+  public SpringSecurityConfig(HappyQueueUserDetailsService userDetailsService) {
+    this.happyQueueUserDetailsService = userDetailsService;
+  }
 
   @Override
   protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication()
-        .withUser("user").password("{noop}password").roles("USER")
-        .and()
-        .withUser("admin").password("{noop}password").roles("USER", "ADMIN");
+    auth.userDetailsService(happyQueueUserDetailsService)
+        .passwordEncoder(new BCryptPasswordEncoder());
   }
 
   @Override
   protected void configure(final HttpSecurity http) throws Exception {
-    http.httpBasic()
+    http.csrf().disable()
+        .httpBasic()
         .and()
         .authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/v1/queue/**").hasRole("USER")
-        .antMatchers(HttpMethod.GET, "/v1/queue").hasRole("USER")
-        .antMatchers(HttpMethod.GET, "/v1/search/**").hasRole("USER")
-        .antMatchers(HttpMethod.GET, "/v1/search").hasRole("USER")
+        .anyRequest().authenticated()
         .and()
-        .csrf().disable()
-        .formLogin().disable();
-  }
-
-  @Bean
-  public UserDetailsService userDetailsService() {
-    //ok for demo
-    User.UserBuilder users = User.withDefaultPasswordEncoder();
-    InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-    manager.createUser(users.username("user").password("password").roles("USER").build());
-    manager.createUser(users.username("admin").password("password").roles("USER", "ADMIN").build());
-    return manager;
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 }
