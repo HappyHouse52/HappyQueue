@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: "happy-queue"
-          image: "gcr.io/upheld-apricot-267218/happy-queue:v13"
+          image: "gcr.io/upheld-apricot-267218/happy-queue:v14"
           env:
             - name: JASYPT_ENCRYPTOR_PASSWORD
               valueFrom:
