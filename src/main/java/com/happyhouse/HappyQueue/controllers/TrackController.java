@@ -22,8 +22,8 @@ public class TrackController {
   }
 
   @PostMapping("/v1/queue/{queueName}/track")
-  public @ResponseBody TrackDb addTrackToQueue(@PathVariable("queueName") String queueName,
-                          @RequestBody Track track) {
+  public TrackDb addTrackToQueue(@PathVariable("queueName") String queueName,
+                                 @RequestBody Track track) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String userName = authentication.getName();
 
