@@ -34,6 +34,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     http.csrf().disable()
         .cors()
         .and()
+        .formLogin().disable()
         .httpBasic()
         .and()
         .authorizeRequests()
@@ -49,6 +50,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(List.of("http://dev.domain.tld"));
     configuration.setAllowedMethods(List.of("GET","POST", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("Content-Type", "Accept", "Origin", "Authorization"));
+    configuration.setAllowCredentials(true);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
