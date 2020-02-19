@@ -9,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,6 +31,11 @@ public class TrackDb {
   @JsonIgnore
   @ToString.Exclude
   private QueueDb queue;
+
+  @OneToMany(mappedBy = "track", cascade = CascadeType.ALL)
+  @JsonIgnore
+  @ToString.Exclude
+  private List<VoteDb> votes;
 
   public TrackDb(String title, String subtitle, String imageUrl, String spotifyUri, String queuer, QueueDb queue) {
     this(title, subtitle, imageUrl, spotifyUri, queuer);
