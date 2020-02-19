@@ -37,6 +37,10 @@ public class TrackDb {
   @ToString.Exclude
   private List<VoteDb> votes;
 
+  public int getVoteTotal() {
+    return votes.stream().mapToInt(v -> v.getVoteType().getValue()).sum();
+  }
+
   public TrackDb(String title, String subtitle, String imageUrl, String spotifyUri, String queuer, QueueDb queue) {
     this(title, subtitle, imageUrl, spotifyUri, queuer);
     this.queue = queue;
