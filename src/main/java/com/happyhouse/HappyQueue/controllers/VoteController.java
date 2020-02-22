@@ -1,5 +1,6 @@
 package com.happyhouse.HappyQueue.controllers;
 
+import com.happyhouse.HappyQueue.enums.VoteType;
 import com.happyhouse.HappyQueue.model.*;
 import com.happyhouse.HappyQueue.repositories.QueueRepository;
 import com.happyhouse.HappyQueue.repositories.TrackRepository;

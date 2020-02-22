@@ -1,4 +1,4 @@
-package com.happyhouse.HappyQueue.model;
+package com.happyhouse.HappyQueue.enums;
 
 public enum VoteType {
   UP(1),

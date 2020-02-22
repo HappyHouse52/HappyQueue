@@ -1,5 +1,6 @@
 package com.happyhouse.HappyQueue.model;
 
+import com.happyhouse.HappyQueue.enums.VoteType;
 import lombok.Data;
 import lombok.ToString;
 

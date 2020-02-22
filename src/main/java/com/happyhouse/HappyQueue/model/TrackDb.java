@@ -3,13 +3,19 @@ package com.happyhouse.HappyQueue.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Data;
-import lombok.ToString;
-
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -53,6 +59,11 @@ public class TrackDb {
     this.queueTime = Timestamp.from(Instant.now());
     this.spotifyUri = spotifyUri;
     this.queuer = queuer;
+  }
+
+  public TrackDb(String title, String subtitle, String imageUrl, String spotifyUri, String queuer, Instant queueTime) {
+    this(title, subtitle, imageUrl, spotifyUri, queuer);
+    this.queueTime = Timestamp.from(queueTime);
   }
 
   public TrackDb() {}
