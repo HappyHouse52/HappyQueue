@@ -3,19 +3,14 @@ package com.happyhouse.HappyQueue.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.ToString;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -41,8 +36,9 @@ public class TrackDb {
   @OneToMany(mappedBy = "track", cascade = CascadeType.ALL)
   @JsonIgnore
   @ToString.Exclude
-  private List<VoteDb> votes;
+  private List<VoteDb> votes = new ArrayList<>();
 
+  @Transient
   public int getVoteTotal() {
     return votes.stream().mapToInt(v -> v.getVoteType().getValue()).sum();
   }
